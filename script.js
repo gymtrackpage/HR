@@ -75,7 +75,7 @@ function calculateHeartRateZones() {
   // Analyze workouts and adjust zones
   workouts.forEach(workout => {
     const expectedDistribution = expectedZonesByDistance[workout.distance];
-    for (const zone in expectedDistribution) {
+    for (const zone in expectedDistribution) { // Corrected loop to iterate over zones
       const expectedLowHr = Math.round(hrr * (parseInt(zone.slice(-1)) * 10 + 40) / 100 + rhr);
       const expectedHighHr = Math.round(hrr * (parseInt(zone.slice(-1)) * 10 + 50) / 100 + rhr);
 
@@ -94,14 +94,15 @@ function calculateHeartRateZones() {
         zoneAdjustments[zone] /= workouts.length;
       });
   }
+
   // Calculate and display adjusted heart rate zones 
   const resultsDiv = document.getElementById('results');
   resultsDiv.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
     const zone = `Zone ${i}`;
     const zonePercentage = i * 10 + 50;
-    const zoneLow = Math.round(hrr * (zonePercentage - 10) / 100 + rhr); // No adjustment to zoneLow
-    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]); // Add adjustment to zoneHigh
+    const zoneLow = Math.round(hrr * (zonePercentage - 10) / 100 + rhr); 
+    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]); 
     resultsDiv.innerHTML += `<p>${zone}: ${zoneLow}-${zoneHigh} bpm</p>`;
   }
 }
