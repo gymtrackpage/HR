@@ -70,7 +70,7 @@ function calculateHeartRateZones() {
     'Zone 1': 0, 'Zone 2': 0, 'Zone 3': 0, 'Zone 4': 0, 'Zone 5': 0
   };
 
-  // Analyze workouts and adjust zones
+ // Analyze workouts and adjust zones
   workouts.forEach(workout => {
     const expectedDistribution = expectedZonesByDistance[workout.distance];
     for (const zone in expectedDistribution) {
@@ -79,7 +79,9 @@ function calculateHeartRateZones() {
 
       if (workout.avgHr >= expectedLowHr && workout.avgHr <= expectedHighHr) {
         const adjustment = workout.avgHr - ((expectedLowHr + expectedHighHr) / 2);
-        zoneAdjustments[zone] += adjustment * expectedDistribution[zone]; // Weighted adjustment
+        
+        // Apply adjustment only to the high end of the zone
+        zoneAdjustments[zone] += adjustment * expectedDistribution[zone];
       }
     }
   });
@@ -95,8 +97,8 @@ function calculateHeartRateZones() {
   for (let i = 1; i <= 5; i++) {
     const zone = `Zone ${i}`;
     const zonePercentage = i * 10 + 50;
-    const zoneLow = Math.round(hrr * (zonePercentage - 10) / 100 + rhr + zoneAdjustments[zone]); // Adjusted zone low calculation
-    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]);
+    const zoneLow = Math.round(hrr * (zonePercentage - 10) / 100 + rhr); // No adjustment to zoneLow
+    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]); // Add adjustment to zoneHigh
     resultsDiv.innerHTML += `<p>${zone}: ${zoneLow}-${zoneHigh} bpm</p>`;
   }
 }
