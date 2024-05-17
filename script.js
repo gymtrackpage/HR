@@ -23,9 +23,9 @@ function calculateHeartRateZones() {
   const rhr = parseInt(document.getElementById('rhr').value);
 
   // Calculate Maximum Heart Rate (MHR) 
-  const mhr = gender === 'female' ? (206 - (0.88 * age)) : (220 - age); // Corrected formula
+  const mhr = gender === 'female' ? (206 - (0.88 * age)) : (220 - age);
   const hrr = mhr - rhr;
-  
+
   // Get workout data
   const workouts = [];
   const workoutInputs = document.querySelectorAll('.workout-input');
@@ -42,7 +42,9 @@ function calculateHeartRateZones() {
     const timeInSeconds = hours * 3600 + minutes * 60 + seconds;
     const avgHr = parseInt(avgHrInput.value);
 
-    workouts.push({ distance, timeInSeconds, avgHr });
+    if (!isNaN(avgHr)) { // Only add workout if average HR is valid
+      workouts.push({ distance, timeInSeconds, avgHr });
+    }
   }
 
   const expectedZonesByDistance = {
@@ -70,7 +72,7 @@ function calculateHeartRateZones() {
     'Zone 1': 0, 'Zone 2': 0, 'Zone 3': 0, 'Zone 4': 0, 'Zone 5': 0
   };
 
- // Analyze workouts and adjust zones
+  // Analyze workouts and adjust zones
   workouts.forEach(workout => {
     const expectedDistribution = expectedZonesByDistance[workout.distance];
     for (const zone in expectedDistribution) {
@@ -87,12 +89,13 @@ function calculateHeartRateZones() {
   });
 
   // Average the adjustments if there are multiple workouts
-  Object.keys(zoneAdjustments).forEach(zone => {
-    zoneAdjustments[zone] /= workouts.length || 1; // Avoid division by zero
-  });
-
-  // Calculate and display adjusted heart rate zones
- const resultsDiv = document.getElementById('results');
+  if (workouts.length > 0) { // Only average if there are workouts
+      Object.keys(zoneAdjustments).forEach(zone => {
+        zoneAdjustments[zone] /= workouts.length;
+      });
+  }
+  // Calculate and display adjusted heart rate zones 
+  const resultsDiv = document.getElementById('results');
   resultsDiv.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
     const zone = `Zone ${i}`;
@@ -102,7 +105,6 @@ function calculateHeartRateZones() {
     resultsDiv.innerHTML += `<p>${zone}: ${zoneLow}-${zoneHigh} bpm</p>`;
   }
 }
-
 
 // Initial workout input on page load
 addWorkoutInput();
