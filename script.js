@@ -90,13 +90,13 @@ function calculateHeartRateZones() {
   });
 
   // Calculate and display adjusted heart rate zones
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = ''; 
+ const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
     const zone = `Zone ${i}`;
     const zonePercentage = i * 10 + 50;
-    const zoneLow = Math.round((hrr * (zonePercentage -10) / 100) + rhr + zoneAdjustments[zone]);
-    const zoneHigh = Math.round((hrr * zonePercentage / 100) + rhr + zoneAdjustments[zone]);
+    const zoneLow = Math.round(hrr * (zonePercentage - 10) / 100 + rhr + zoneAdjustments[zone]); // Adjusted zone low calculation
+    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]);
     resultsDiv.innerHTML += `<p>${zone}: ${zoneLow}-${zoneHigh} bpm</p>`;
   }
 }
