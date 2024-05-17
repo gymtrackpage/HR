@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Target Heart Rate Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Target Heart Rate Calculator</h2>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" min="1" value="30">
+
+    <label for="gender">Gender:</label>
+    <select id="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label for="rhr">Resting Heart Rate:</label>
+    <input type="number" id="rhr" min="30" max="100" value="60">
+
+    <h3>Workout Data:</h3>
+    <div id="workoutInputs">
+      </div>
+
+    <button id="addWorkout">Add Workout</button>
+    <button onclick="calculateHeartRateZones()">Calculate</button>
+
+    <h3>Results:</h3>
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
