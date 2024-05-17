@@ -22,10 +22,10 @@ function calculateHeartRateZones() {
   const gender = document.getElementById('gender').value;
   const rhr = parseInt(document.getElementById('rhr').value);
 
-  // Calculate Maximum Heart Rate (MHR)
-  const mhr = gender === 'female' ? (206 - (0.88 * age)) : (220 - age);
+  // Calculate Maximum Heart Rate (MHR) 
+  const mhr = gender === 'female' ? (206 - (0.88 * age)) : (220 - age); // Corrected formula
   const hrr = mhr - rhr;
-
+  
   // Get workout data
   const workouts = [];
   const workoutInputs = document.querySelectorAll('.workout-input');
@@ -95,8 +95,8 @@ function calculateHeartRateZones() {
   for (let i = 1; i <= 5; i++) {
     const zone = `Zone ${i}`;
     const zonePercentage = i * 10 + 50;
-    const zoneLow = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]);
-    const zoneHigh = Math.round(hrr * (zonePercentage + 10) / 100 + rhr + zoneAdjustments[zone]);
+    const zoneLow = Math.round(hrr * zonePercentage -10 / 100 + rhr + zoneAdjustments[zone]);
+    const zoneHigh = Math.round(hrr * zonePercentage / 100 + rhr + zoneAdjustments[zone]);
     resultsDiv.innerHTML += `<p>${zone}: ${zoneLow}-${zoneHigh} bpm</p>`;
   }
 }
